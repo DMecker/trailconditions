@@ -2,37 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Trail Journal</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; background: #f4f4f4; }
-        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .date { color: #666; font-size: 0.9em; }
-        .tag { background: #e2e2e2; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; }
+        /* General Setup */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 0; background: #f9f9f7; color: #333; }
+        
+        /* Banner Styles */
+        .banner {
+            width: 100%;
+            height: 300px;
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('banner.jpg'); /* This looks for a file named banner.jpg */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        .banner h1 { font-size: 3rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+
+        /* Content Layout */
+        .container { max-width: 800px; margin: -40px auto 40px; padding: 20px; position: relative; }
+        
+        .card { 
+            background: white; 
+            padding: 25px; 
+            margin-bottom: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #4a7c59; /* A nice forest green */
+        }
+        
+        .date { color: #888; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+        .location-tag { background: #e8f0ea; color: #2d5a3a; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-left: 10px; }
+        h2 { margin-top: 5px; color: #2c3e50; }
+        .condition-label { font-weight: bold; color: #555; }
     </style>
 </head>
 <body>
-    <h1>Trail Visit Journal</h1>
-    <div id="trail-list">Current Reports</div>
+
+    <div class="banner">
+        <h1>🌲 My Trail Journal</h1>
+    </div>
+
+    <div class="container">
+        <div id="trail-list">Loading the latest reports...</div>
+    </div>
 
     <script>
-        // Tell the script to look for your CSV file
-        Papa.parse("trail_sheet.csv", {
+        Papa.parse("trails.csv", {
             download: true,
             header: true,
             complete: function(results) {
                 let html = "";
-                // Reverse to show the most recent trip first
-                results.data.reverse().forEach(row => {
-                    if(row.TrailName) {
-                        html += `
-                            <div class="card">
-                                <div class="date">${row.Date}</div>
-                                <h2>${row.TrailName} <span class="tag">${row.Location}</span></h2>
-                                <p><strong>Condition:</strong> ${row.Condition}</p>
-                                <p>${row.Notes}</p>
-                            </div>`;
-                    }
+                // Filter out empty rows and reverse for newest first
+                const data = results.data.filter(row => row.TrailName).reverse();
+                
+                data.forEach(row => {
+                    html += `
+                        <div class="card">
+                            <div class="date">${row.Date} <span class="location-tag">${row.Location}</span></div>
+                            <h2>${row.TrailName}</h2>
+                            <p><span class="condition-label">Condition:</span> ${row.Condition}</p>
+                            <p>${row.Notes}</p>
+                        </div>`;
                 });
                 document.getElementById('trail-list').innerHTML = html;
             }
