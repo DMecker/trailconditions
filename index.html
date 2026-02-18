@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Trail Journal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; background: #f4f4f4; }
+        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .date { color: #666; font-size: 0.9em; }
+        .tag { background: #e2e2e2; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <h1>🌲 Trail Visit Journal</h1>
+    <div id="trail-list">Loading reports...</div>
+
+    <script>
+        // Tell the script to look for your CSV file
+        Papa.parse("trails.csv", {
+            download: true,
+            header: true,
+            complete: function(results) {
+                let html = "";
+                // Reverse to show the most recent trip first
+                results.data.reverse().forEach(row => {
+                    if(row.TrailName) {
+                        html += `
+                            <div class="card">
+                                <div class="date">${row.Date}</div>
+                                <h2>${row.TrailName} <span class="tag">${row.Location}</span></h2>
+                                <p><strong>Condition:</strong> ${row.Condition}</p>
+                                <p>${row.Notes}</p>
+                            </div>`;
+                    }
+                });
+                document.getElementById('trail-list').innerHTML = html;
+            }
+        });
+    </script>
+</body>
+</html>
