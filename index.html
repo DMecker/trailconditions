@@ -9,31 +9,24 @@
         /* General Setup */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 0; background: #f9f9f7; color: #333; }
         
-        /* Banner Styles */
+/* Updated Banner Styles */
         .banner {
             width: 100%;
-            height: 300px;
-            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('banner.jpeg'); /* This looks for a file named banner.jpg */
+            height: 450px; /* Increased height to make it "drop down" lower */
+            background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7)), url('banner.jpg'); 
             background-size: cover;
             background-position: center;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-end; /* Pushes the text to the bottom */
+            justify-content: flex-start; /* Aligns text to the left; change to 'center' if preferred */
             color: white;
-            text-align: center;
         }
-        .banner h1 { font-size: 3rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 
-        /* Content Layout */
-        .container { max-width: 800px; margin: -40px auto 40px; padding: 20px; position: center; }
-        
-        .card { 
-            background: white; 
-            padding: 25px; 
-            margin-bottom: 20px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-left: 5px solid #4a7c59; /* A nice forest green */
+        .banner h1 { 
+            font-size: 3.5rem; 
+            margin: 0; 
+            padding: 0 0 30px 40px; /* Adds space from the bottom (30px) and left (40px) */
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); 
         }
         
         .date { color: #888; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
@@ -46,10 +39,6 @@
 
     <div class="banner">
         <h1>Washington Trail Running Reports</h1>
-    </div>
-
-    <div class="container">
-        <div id="trail-list">Reports from the field</div>
     </div>
 
     <script>
